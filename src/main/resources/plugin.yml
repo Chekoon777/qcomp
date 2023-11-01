@@ -1,0 +1,4 @@
+name: qcomp
+version: '${project.version}'
+main: qd.qcomp.qcompplugin.Qcomp
+api-version: '1.20'
