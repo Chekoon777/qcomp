@@ -11,7 +11,8 @@ public class MetaManager {
     Plugin owningplugin;
     public final String[] metanames = {
             "fromdir",
-            "qubit",
+            "qstate",
+            "text"
     };
 
     public MetaManager(Plugin plugin) {
