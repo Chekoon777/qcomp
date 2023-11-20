@@ -19,8 +19,11 @@ import org.apache.commons.math3.complex.Complex;
 import org.bukkit.util.Transformation;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
+import org.w3c.dom.Text;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
@@ -128,22 +131,48 @@ public final class Qcomp extends JavaPlugin implements Listener, CommandExecutor
 
         if(placedBlock.getType() == Material.COAL_BLOCK) {
             // start propagation
-            qsProp(placedBlock, -1, initstate, false);
+            qsProp(placedBlock, -1, initstate);
         }
         else {
             // resume suspended propagation if exists
             Block curr;
+            int propfromdir = -1;
             for(int i=0; i<6; i++) {
                 curr = placedBlock.getRelative(dir[i][0], dir[i][1], dir[i][2]);
                 if(curr.hasMetadata("qstate")) {
-                    Qstate q = mm.Get(curr, "qstate", Qstate.class);
-                    qsProp(placedBlock, oppdir[i], q, false);
+                    if(propfromdir == -1)
+                        propfromdir = i;
+                    else{
+                        // More than two inputs: invalid
+                        placedBlock.breakNaturally(new ItemStack(Material.AIR));
+                        currplayer.sendMessage("Invalid Propagation!");
+                        return;
+                    }
                 }
+            }
+            if(propfromdir == -1) return;
+
+            curr = placedBlock.getRelative(dir[propfromdir][0], dir[propfromdir][1], dir[propfromdir][2]);
+            Qstate q = mm.Get(curr, "qstate", Qstate.class);
+            int fromdir = mm.Get(curr, "fromdir", Integer.class);
+            switch (curr.getType()) {
+                case EMERALD_BLOCK:         // X gate
+                case COPPER_BLOCK:          // Y gate
+                case DIAMOND_BLOCK:         // Z gate
+                case GOLD_BLOCK:            // H gate
+                case QUARTZ_BLOCK:          // A gate : Custom gate
+                    if(oppdir[propfromdir] == fromdir) qsProp(placedBlock, oppdir[propfromdir], q);
+                    break;
+                case REDSTONE_BLOCK:
+                    qsProp(placedBlock, oppdir[propfromdir], q.setselsig(oppdir[propfromdir] != fromdir));
+                    break;
+                default:
+                    qsProp(placedBlock, oppdir[propfromdir], q);
             }
         }
     }
 
-    private void qsProp(Block curr, int fromdir, Qstate q, boolean modify) {
+    private void qsProp(Block curr, int fromdir, Qstate q) {
         Complex[][] gate = null;
         boolean makeselsig = false;
 
@@ -201,9 +230,8 @@ public final class Qcomp extends JavaPlugin implements Listener, CommandExecutor
                     Qstate data = mm.Get(curr, "qstate", Qstate.class);
                     controlledApply(curr, data, newq.q, fromdir, gate);
 
-                    fromdir = mm.Get(curr, "fromdir", Integer.class);
                     newq = data;
-                    modify = true;
+                    fromdir = mm.Get(curr, "fromdir", Integer.class);
                 }
                 else {
                     // Data not in the gate: wait for data
@@ -241,22 +269,24 @@ public final class Qcomp extends JavaPlugin implements Listener, CommandExecutor
             }
         }
 
-        TextDisplay text;
-
-        if(!modify) {
-            // Non-modifying state: Should be no metadata
-            if(curr.hasMetadata("qstate")) {
-                // Invalid Propagation
+        // Check invalid propagation
+        if(curr.hasMetadata("fromdir")) {
+            if(mm.Get(curr, "fromdir", Integer.class) != fromdir) {
                 int opp = oppdir[fromdir];
                 Block invalidblock = curr.getRelative(dir[opp][0], dir[opp][1], dir[opp][2]);
-                text = mm.Get(invalidblock, "text", TextDisplay.class);
-                if(text != null) text.remove();
+                TextDisplay invtext = mm.Get(invalidblock, "text", TextDisplay.class);
+                if(invtext != null) invtext.remove();
                 currplayer.sendMessage("Invalid Propagation!");
                 invalidblock.breakNaturally(new ItemStack(Material.AIR));
                 mm.DelAll(invalidblock);
                 return;
             }
-            // Spawn Text Display
+        }
+
+        // Set text
+        TextDisplay text = mm.Get(curr, "text", TextDisplay.class);
+        if(text == null) {
+            // No text display yet: spawn new one
             text = world.spawn(curr.getLocation().add(0.5, 1.1, 0.5), TextDisplay.class);
             text.setBillboard(Display.Billboard.CENTER);
             text.setTransformation(new Transformation(
@@ -265,15 +295,10 @@ public final class Qcomp extends JavaPlugin implements Listener, CommandExecutor
                     new Vector3f(0.5f,0.5f,0.5f),           // scale
                     new Quaternionf(0f, 0f, 0f, 1f)      // rightRotation
             ));
-            text.setText(newq.toString());
         }
-        else {
-            // Modifying state
-            text = mm.Get(curr, "text", TextDisplay.class);
-            text.setText(newq.toString()+"\nAffected");
-        }
+        text.setText(newq.toString());
 
-        // Set Metadata
+        // Set metadata
         mm.Set(curr, "fromdir", fromdir);
         mm.Set(curr, "qstate", newq);
         mm.Set(curr, "text", text);
@@ -282,7 +307,10 @@ public final class Qcomp extends JavaPlugin implements Listener, CommandExecutor
         for(int i=0; i<6; i++) {
             if(fromdir != -1 && i == oppdir[fromdir]) continue;
             if(gate != null && i != fromdir) continue;
-            qsProp(curr.getRelative(dir[i][0], dir[i][1], dir[i][2]), i, newq.setselsig(makeselsig && (i != fromdir)), modify);
+            if(makeselsig)
+                qsProp(curr.getRelative(dir[i][0], dir[i][1], dir[i][2]), i, newq.setselsig(i != fromdir));
+            else
+                qsProp(curr.getRelative(dir[i][0], dir[i][1], dir[i][2]), i, newq);
         }
     }
 
@@ -301,7 +329,7 @@ public final class Qcomp extends JavaPlugin implements Listener, CommandExecutor
         Block sigblock = gateblock.getRelative(dir[opp][0], dir[opp][1], dir[opp][2]);
         while(sigblock.getType() != Material.REDSTONE_BLOCK) {
             sigblock.setType(Material.BLUE_STAINED_GLASS);
-            int from = mm.Get(sigblock, "fromdir", Integer.class);
+            int from = oppdir[mm.Get(sigblock, "fromdir", Integer.class)];
             sigblock = sigblock.getRelative(dir[from][0], dir[from][1], dir[from][2]);
         }
 
@@ -310,9 +338,9 @@ public final class Qcomp extends JavaPlugin implements Listener, CommandExecutor
 
         TextDisplay text = mm.Get(sigblock, "text", TextDisplay.class);
         int fromdir = mm.Get(sigblock, "fromdir", Integer.class);
-        text.setText(otherq+"\nAffected");
+        text.setText(otherq.toString());
 
-        qsProp(sigblock.getRelative(dir[fromdir][0], dir[fromdir][1], dir[fromdir][2]), fromdir, otherq, true);
+        qsProp(sigblock.getRelative(dir[fromdir][0], dir[fromdir][1], dir[fromdir][2]), fromdir, otherq);
     }
 
     @EventHandler

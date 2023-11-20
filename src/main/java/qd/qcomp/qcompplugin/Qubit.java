@@ -20,7 +20,7 @@ public class Qubit {
     }
 
     public String toString() {
-        return String.format("§a0:§r %s\n§a1:§r %s",
+        return String.format("§a|0>:§r %s\n§a|1>:§r %s",
             ComplextoString(coef[0]),
             ComplextoString(coef[1])
         );
@@ -60,8 +60,8 @@ public class Qubit {
     }
 
     public static String ComplextoString(Complex cpx) {
-        String op = cpx.getImaginary() >= 0 ? "§a+§r" : "§a-§r";
-        return String.format("%.2f%s%.2fi", cpx.getReal(), op,
+        String op = cpx.getImaginary() >= 0 ? "§b+§r" : "§b-§r";
+        return String.format("%.2f%s%.2f§bi§r", cpx.getReal(), op,
             cpx.getImaginary()<0 ? -cpx.getImaginary() : cpx.getImaginary());
     }
 }

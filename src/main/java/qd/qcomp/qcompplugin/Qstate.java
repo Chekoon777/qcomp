@@ -54,7 +54,7 @@ public class Qstate {
 
     public Qstate apply(Complex[][] gate) {
         Qstate newq = this.copy();
-        q = q.apply(gate);
+        newq.q = q.apply(gate);
         for(int i=0; i<numaffected; i++) {
             newq.ifzero.set(i, ifzero.get(i).mul(gate[0][0]).add(ifone.get(i).mul(gate[0][1])));
             newq.ifone.set(i, ifzero.get(i).mul(gate[1][0]).add(ifone.get(i).mul(gate[1][1])));
