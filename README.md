@@ -33,19 +33,16 @@ Inspire future generations of scientists and programmers to explore the fascinat
 1. Real-Time Circuit Modification
 
 2. Displays Quantum State on Every Circuit Blocks
-
-coef of zero ket and one ket shows probability of measuring 0 and 1
+  coef of zero ket and one ket shows probability of measuring 0 and 1
 
 3. Ifzero and Ifone Viewable When Block Clicked on Every Circuit Blocks
-
-Ifzero and Ifone are lists that store quantum states of other qubits that are controlled by this qubit, when this qubit is zero and one respectively.
+  Ifzero and Ifone are lists that store quantum states of other qubits that are controlled by this qubit, when this qubit is zero and one respectively.\n
 When Measurement, either Ifzero or Ifone is propagated into other qubits, in the reverse order of qubits becoming related. 
 
 4. Commands:
-
-/qskit: Gives player blocks for constructing a quantum circuit
-/qsinit: Changes the initial quantum state into a custom state
-/customgate: Edits the entries of custom quantum gate A
+  /qskit: Gives player blocks for constructing a quantum circuit\n
+/qsinit: Changes the initial quantum state into a custom state\n
+/customgate: Edits the entries of custom quantum gate A\n
 
 
 ## Example of What You Can Make
