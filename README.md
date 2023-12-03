@@ -1,4 +1,6 @@
 # QuantumCraft: The Blockverse Simulator
+
+![QuantumCraft](https://github.com/Chekoon777/qcomp/assets/113446650/e49776c0-0e93-4898-a676-f5de9eb44d0e)
 ------------------------
 
 ### Group QD
@@ -39,7 +41,7 @@ coef of zero ket and one ket shows probability of measuring 0 and 1
 Ifzero and Ifone are lists that store quantum states of other qubits that are controlled by this qubit, when this qubit is zero and one respectively.<br />
 When Measurement, either Ifzero or Ifone is propagated into other qubits, in the reverse order of qubits becoming related.
 
-4. Commands:<br />><br />
+4. Commands:<br /><br />
 /qskit: Gives player blocks for constructing a quantum circuit<br />
 /qsinit: Changes the initial quantum state into a custom state<br />
 /customgate: Edits the entries of custom quantum gate A
@@ -63,13 +65,13 @@ When a certain qubit is clicked, a window appear showing other affected qubits. 
 
 <img width="1280" alt="2" src="https://github.com/Chekoon777/qcomp/assets/113446650/901098e8-fa59-4a81-953a-6c8963a21c7a">
 
-In this example, the oracle function is constant (f(0)=0, f(1)=0). Therefore, the input state at the end has still 100% probability of measuring zero. 
+In this example, the oracle function is constant (f(0)=0, f(1)=0). Therefore, the input state at the end has still 100% probability of measuring zero. <br />
 
 - Quantum Oracle with balanced function
 
 <img width="1280" alt="1" src="https://github.com/Chekoon777/qcomp/assets/113446650/50c91cb6-933f-4364-a0e9-69e2a1ab2475">
 
-In this example, the oracle function is balanced (f(1)=0, f(0)=1). Therefore, the input state at the end has still 100% probability of measuring one.
+In this example, the oracle function is balanced (f(1)=0, f(0)=1). Therefore, the input state at the end has still 100% probability of measuring one.<br />
 
 - Deutsch-Josza Algorithm
 
