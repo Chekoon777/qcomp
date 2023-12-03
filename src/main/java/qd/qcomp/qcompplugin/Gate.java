@@ -22,4 +22,10 @@ public class Gate {
         { new Complex(1/Math.sqrt(2)), new Complex(1/Math.sqrt(2))  },
         { new Complex(1/Math.sqrt(2)), new Complex(-1/Math.sqrt(2)) },
     };
+
+    // A can be modified with command "/customgate"
+    public static Complex[][] A = {
+            { Complex.ONE, Complex.ZERO },
+            { Complex.ZERO, Complex.ONE },
+    };
 }

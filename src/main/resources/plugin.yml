@@ -2,3 +2,19 @@ name: qcomp
 version: '${project.version}'
 main: qd.qcomp.qcompplugin.Qcomp
 api-version: '1.20'
+
+commands:
+  qskit:
+    description: |
+      Gives quantum computing kit to player's inventory.
+    usage: /qskit
+  customgate:
+    description: |
+      Set gate A into custom 2x2 matrix.
+      Requires 4 arguments indicating each entries A[0][0], A[0][1], A[1][0], A[1][1]
+    usage: /customgate a+bi c+di e+fi g+hi
+  qsinit:
+    description: |
+      Set starting quantum state into custom state.
+      Requires 2 arguments indicating each coefficients of ket0, ket1
+    usage: /qsinit a+bi c+di
