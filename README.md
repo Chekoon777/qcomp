@@ -63,13 +63,13 @@ When a certain qubit is clicked, a window appear showing other affected qubits. 
 
 - Quantum Oracle with constant function
 
-<img width="1280" alt="2" src="https://github.com/Chekoon777/qcomp/assets/113446650/901098e8-fa59-4a81-953a-6c8963a21c7a">
+<img width="1280" alt="1" src="https://github.com/Chekoon777/qcomp/assets/113446650/50c91cb6-933f-4364-a0e9-69e2a1ab2475">
 
 In this example, the oracle function is constant (f(0)=0, f(1)=0). Therefore, the input state at the end has still 100% probability of measuring zero. <br />
 
 - Quantum Oracle with balanced function
 
-<img width="1280" alt="1" src="https://github.com/Chekoon777/qcomp/assets/113446650/50c91cb6-933f-4364-a0e9-69e2a1ab2475">
+<img width="1280" alt="2" src="https://github.com/Chekoon777/qcomp/assets/113446650/901098e8-fa59-4a81-953a-6c8963a21c7a">
 
 In this example, the oracle function is balanced (f(1)=0, f(0)=1). Therefore, the input state at the end has still 100% probability of measuring one.<br />
 
