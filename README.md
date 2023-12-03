@@ -39,8 +39,8 @@ coef of zero ket and one ket shows probability of measuring 0 and 1
 Ifzero and Ifone are lists that store quantum states of other qubits that are controlled by this qubit, when this qubit is zero and one respectively.<br />
 When Measurement, either Ifzero or Ifone is propagated into other qubits, in the reverse order of qubits becoming related.
 
-4. Commands:<br />
-/qskit: Gives player blocks for constructing a quantum circuit<br /><br />
+4. Commands:<br />><br />
+/qskit: Gives player blocks for constructing a quantum circuit<br />
 /qsinit: Changes the initial quantum state into a custom state<br />
 /customgate: Edits the entries of custom quantum gate A
 
