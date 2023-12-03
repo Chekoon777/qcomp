@@ -1,19 +1,17 @@
 # QuantumCraft: The Blockverse Simulator
-========================================
+------------------------
 
 ### Group QD
 ### Byungchul Kim, Chaehoon Park, Nohyoon Park, Taewoo Lee
-
-==========================================================
+------------------------
 
 ## Source Code Directory
-------------------------
+
 
 src/main/java/qd.qcomp.qcompplugin
 
 
 ## Source Code Files
---------------------
 
 Qcomp.java
 MetaManager.java
@@ -23,7 +21,6 @@ Gate.java
 
 
 ## Goals
---------
 
 Understanding quantum computing and circuits in an interactive, visual Format
 Make it more accessible and comprehensible to a broader audience
@@ -32,7 +29,6 @@ Inspire future generations of scientists and programmers to explore the fascinat
 
 
 ## Implemented Features
------------------------
 
 1. Real-Time Circuit Modification
 2. Displays Quantum State on Every Circuit Blocks
@@ -47,7 +43,6 @@ Inspire future generations of scientists and programmers to explore the fascinat
 
 
 ## Example of What You Can Make
--------------------------------
 
 ### Basic Quantum Entanglement Circuit
 
